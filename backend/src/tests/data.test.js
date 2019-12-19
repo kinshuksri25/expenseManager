@@ -3,8 +3,8 @@
 */
 
 //Dependencies
-var mongo = require('../lib/data');
-var { dbConstants} = require('../../../config/dataConstants');
+let mongo = require('../lib/data');
+let { dbConstants} = require('../../../config/dataConstants');
 
 describe("fetch data test",()=>{
 

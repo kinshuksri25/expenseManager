@@ -3,8 +3,8 @@
 */
 
 //Dependencies
-var request = require('supertest');
-var {app} = require('../lib/server');
+let request = require('supertest');
+let {app} = require('../lib/server');
 
 //Test the connection
 //GET

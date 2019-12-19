@@ -3,11 +3,11 @@
  */
 
 //Dependencies
-var mongoDB = require('mongodb').MongoClient;
-var { dbConstants, ERRORS, SINGLE, MULTIPLE } = require('../../../config/dataConstants');
+let mongoDB = require('mongodb').MongoClient;
+let { dbConstants, ERRORS, SINGLE, MULTIPLE } = require('../../../config/dataConstants');
 
 //mongo object definition
-var mongo = {};
+let mongo = {};
 
 //mongo atlas url
 mongo.url = "mongodb+srv://dummysample:86588658@expenseeve-c7yv4.mongodb.net/test?retryWrites=true&w=majority";

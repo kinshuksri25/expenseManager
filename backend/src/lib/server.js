@@ -3,12 +3,13 @@
 */
 
 //Dependencies
-var app = require('express')();
-var mongo = require('./data');
-var { dbConstants} = require('../../../config/dataConstants');
+let app = require('express')();
+let domainLogicHandlers = require('./domainLogicHandlers');
+let profileHandlers = require('./profileHandlers');
+let loginHandlers = require('./loginHandlers');
 
 //defining the server object
-var server = {};
+let server = {};
 
 /*
 *   defining all the routes using express
@@ -29,19 +30,19 @@ app.post('/postTestRoute',function(req,res){
 });
 
 //TODO --> create all the required routes for business logic
-app.get('/getUserData',function(req,res){
-    res.end();
-});
-
-app.post('/addExpense',function(req,res){
-    res.end();
-});
-
 app.post('/login',function(req,res){
     res.end();
 });
 
 app.post('/signup',function(req,res){
+    res.end();
+});
+
+app.get('/getUserData',function(req,res){
+    res.end();
+});
+
+app.post('/addExpense',function(req,res){
     res.end();
 });
 

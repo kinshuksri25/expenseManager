@@ -5,10 +5,10 @@
  */
 
 //Dependencies
-var {server} = require('./lib/server');
+let {server} = require('./lib/server');
 
 //declare the app
-var app = {};
+let app = {};
 
 
 //define the init method
