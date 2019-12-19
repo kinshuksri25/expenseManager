@@ -1,0 +1,29 @@
+{
+  "name": "exp_backend",
+  "version": "0.0.1",
+  "description": "expense manager",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "devstart": "nodemon src/index.js",
+    "test": "jest --detectOpenHandles"
+  },
+  "jest": {
+  },
+  "keywords": [
+    "money",
+    "tally"
+  ],
+  "author": "kinshuk srivastava",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "googleapis": "^46.0.0",
+    "mongo": "^0.1.0"
+  }
+}

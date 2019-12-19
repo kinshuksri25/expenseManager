@@ -1,0 +1,2 @@
+#ignore the following files/folders during commit 
+*/node_modules
