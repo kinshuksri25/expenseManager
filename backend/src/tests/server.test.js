@@ -20,7 +20,7 @@ describe('GET /getTestRoute', () => {
 
 //POST
 describe('POST /postTestRoute', function() {
-    it('responds with json', function(done) {
+  test('responds with json', function(done) {
       request(app)
         .post('/postTestRoute')
         .send({})

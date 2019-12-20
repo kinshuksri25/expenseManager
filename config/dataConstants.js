@@ -56,6 +56,14 @@ dataConstants.sessionObject = {
     creationTime : ""
 };
 
+dataConstants.expenseObject = {
+    category : "",
+    itemName : "",
+    amount : 0,
+    expenseDate : "",
+    state : true
+};
+
 dataConstants.SINGLE = 1;
 dataConstants.MULTIPLE = 2;
 dataConstants.ERRORSTATUS = "ERROR";
