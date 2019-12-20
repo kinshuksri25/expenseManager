@@ -14,7 +14,6 @@ let loginHandlers = {};
 //signup handler 
 //Params --> requestObject -- object
 loginHandlers.signUp = requestObject => new Promise((resolve,reject) =>{
-
     if(typeof(requestObject) ==  'object' && requestObject.hasOwnProperty('userName') && requestObject.hasOwnProperty('password') && requestObject.hasOwnProperty('firstName') && requestObject.hasOwnProperty('lastName') && requestObject.hasOwnProperty('photoUrl') && requestObject.hasOwnProperty('occupation')){
        
         //encrypt password using crypto

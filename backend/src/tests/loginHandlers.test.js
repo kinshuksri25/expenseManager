@@ -15,7 +15,7 @@ describe("SignUp unit test cases",() => {
             firstName : "sample",
             lastName : "dummy",
             photoUrl : "sample url",
-            occupation : "between jobs",
+            occupation : "between jobs"
         };
     });
 

@@ -12,7 +12,7 @@ describe("domain logic unit test cases",() => {
         userObject = {
             userName : "sampleDummy",
             budget : 10000,
-            expenseCatagory : ["sample","dummy"],
+            expenseCatagories : ["sample","dummy"],
             expenses : {},
         };
     });

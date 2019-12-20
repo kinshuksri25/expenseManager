@@ -8,8 +8,7 @@
     "devstart": "nodemon src/index.js",
     "test": "jest --detectOpenHandles"
   },
-  "jest": {
-  },
+  "jest": {},
   "keywords": [
     "money",
     "tally"
@@ -22,6 +21,7 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "googleapis": "^46.0.0",
     "mongo": "^0.1.0"
