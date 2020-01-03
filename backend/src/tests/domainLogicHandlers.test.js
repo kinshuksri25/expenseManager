@@ -1,23 +1,23 @@
 /*
-*   DomainLogicHandlers unit test file
-*/
+ *   DomainLogicHandlers unit test file
+ */
 
 //Dependencies
-let {SUCCESSSTATUS, ERRORS, expenseObject} = require('../../../config/dataConstants');
+let { SUCCESSSTATUS, ERRORS, expenseObject } = require('../../../config/dataConstants');
 let domainLogicHandlers = require('../lib/domainLogicHandlers');
 
-describe("domain logic unit test cases",() => {
+describe("domain logic unit test cases", () => {
     let userObject = {};
     beforeEach(() => {
         userObject = {
-            userName : "sampleDummy",
-            budget : 10000,
-            expenseCatagories : ["sample","dummy"],
-            expenses : {},
+            userName: "sampleDummy",
+            budget: 10000,
+            expenseCatagories: ["sample", "dummy"],
+            expenses: {},
         };
     });
 
-    test("it gets the users data",() => {
+    test("it gets the users data", () => {
         domainLogicHandlers.getUserData(userObject).then(returnObject => {
             expect(returnObject.status).toEqual(SUCCESSSTATUS);
         }).catch(rejectObject => {
@@ -25,15 +25,15 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it fails to get users data",() => {
+    test("it fails to get users data", () => {
         delete userObject.userName;
-        
+
         domainLogicHandlers.getUserData(userObject).catch(rejectObject => {
             expect(rejectObject.status).toEqual(SUCCESSSTATUS);
         });
     });
 
-    test("it updates the budget",() => {
+    test("it updates the budget", () => {
         domainLogicHandlers.editBudget(userObject).then(returnObject => {
             expect(returnObject.status).toEqual(SUCCESSSTATUS);
         }).catch(rejectObject => {
@@ -41,7 +41,7 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it delete an expense catagory",() => {
+    test("it delete an expense catagory", () => {
         domainLogicHandlers.deleteExpenseCatagory(userObject).then(returnObject => {
             expect(returnObject.status).toEqual(SUCCESSSTATUS);
         }).catch(rejectObject => {
@@ -49,8 +49,8 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it adds an expense to the user",() => {
-        delete userObject.expenseCatagory;
+    test("it adds an expense to the user", () => {
+        delete userObject.expenseCatagories;
 
         domainLogicHandlers.addExp(userObject).then(returnObject => {
             expect(returnObject.status).toEqual(SUCCESSSTATUS);
@@ -59,7 +59,7 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it adds an expenseCatagory to the user",() => {
+    test("it adds an expenseCatagory to the user", () => {
         delete userObject.expenses;
 
         domainLogicHandlers.addExp(userObject).then(returnObject => {
@@ -69,13 +69,13 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it edits the expense",() =>{
+    test("it edits the expense", () => {
 
-        expenseCatagory.category = "sample";
-        expenseCatagory.itemName = "dummyItem";
-        expenseCatagory.amount = 400;
-        expenseCatagory.expenseDate = "12323235";
-        expenseCatagory.state = true;
+        expenseObject.category = "sample";
+        expenseObject.itemName = "dummyItem";
+        expenseObject.amount = 400;
+        expenseObject.expenseDate = "12323235";
+        expenseObject.state = true;
         userObject.expenses = expenseObject;
 
         domainLogicHandlers.editExpense(userObject).then(returnObject => {
@@ -85,13 +85,13 @@ describe("domain logic unit test cases",() => {
         });
     });
 
-    test("it soft deletes an expense",() =>{
-       
-        delete expenseCatagory.amount;
-        expenseCatagory.category = "sample";
-        expenseCatagory.itemName = "dummyItem";
-        expenseCatagory.expenseDate = "12323235";
-        expenseCatagory.state = false;
+    test("it soft deletes an expense", () => {
+
+        expenseObject.category = "sample";
+        expenseObject.itemName = "dummyItem";
+        expenseObject.expenseDate = "12323235";
+        expenseObject.amount = 400;
+        expenseObject.state = false;
         userObject.expenses = expenseObject;
 
         domainLogicHandlers.editExpense(userObject).catch(rejectObject => {

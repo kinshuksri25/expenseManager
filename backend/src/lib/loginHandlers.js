@@ -1,6 +1,6 @@
 /*
-*   Primary Pre-Login Handlers
-*/
+ *   Primary Pre-Login Handlers
+ */
 
 //Dependencies
 let mongo = require('./data');
@@ -13,27 +13,25 @@ let loginHandlers = {};
 
 //signup handler 
 //Params --> requestObject -- object
-loginHandlers.signUp = requestObject => new Promise((resolve,reject) =>{
-    if(typeof(requestObject) ==  'object' && requestObject.hasOwnProperty('userName') && requestObject.hasOwnProperty('password') && requestObject.hasOwnProperty('firstName') && requestObject.hasOwnProperty('lastName') && requestObject.hasOwnProperty('photoUrl') && requestObject.hasOwnProperty('occupation')){
-       
+loginHandlers.signUp = requestObject => new Promise((resolve, reject) => {
+
+    if (typeof(requestObject) == 'object' && requestObject.hasOwnProperty('userName') && requestObject.hasOwnProperty('password') && requestObject.hasOwnProperty('firstName') && requestObject.hasOwnProperty('lastName') && requestObject.hasOwnProperty('occupation')) {
+
         //encrypt password using crypto
         let encryptedPassword = encryptionAPI.hash(requestObject.password);
 
-       //set userObject 
-       userObject.userName = requestObject.userName;
-       userObject.firstName = requestObject.firstName;
-       userObject.lastName = requestObject.lastName;
-       userObject.photoUrl = requestObject.photoUrl;
-       userObject.occupation = requestObject.occupation;
-       userObject.password = encryptedPassword;
+        //set userObject 
+        userObject.userName = requestObject.userName;
+        userObject.firstName = requestObject.firstName;
+        userObject.lastName = requestObject.lastName;
+        userObject.occupation = requestObject.occupation;
+        userObject.password = encryptedPassword;
 
         //check if the username is already present in the db
-        mongo.read(dbConstants.userCollection,{userName:userObject.userName},{projection:{_id: 0}}).then(readResult => {
-            
-            if(JSON.stringify(readResult) == JSON.stringify([]))
-              {
-                    //save the data to db
-                mongo.insert(dbConstants.userCollection,userObject,{}).then(insertResult => {
+        mongo.read(dbConstants.userCollection, { userName: userObject.userName }, { projection: { _id: 0 } }).then(readResult => {
+            if (JSON.stringify(readResult) == JSON.stringify([])) {
+                //save the data to db
+                mongo.insert(dbConstants.userCollection, userObject, {}).then(insertResult => {
 
                     //create temp loginObject
                     let loginObject = {};
@@ -41,23 +39,23 @@ loginHandlers.signUp = requestObject => new Promise((resolve,reject) =>{
                     loginObject.password = requestObject.password;
 
                     //log the user in
-                    loginHandlers.login(loginObject).then( resObject =>{
+                    loginHandlers.login(loginObject).then(resObject => {
                         resolve(resObject);
                     }).catch(errObject => {
                         reject(errObject);
                     });
                 }).catch(insertErr => {
-                  throw insertErr;
+                    throw insertErr;
                 });
-              }else{
-                throw ERRORS.ERR_USR_DM;  
-              }
+            } else {
+                throw ERRORS.ERR_USR_DM;
+            }
         }).catch(err => {
             responseObject.status = ERRORSTATUS;
             responseObject.payload = err;
             reject(responseObject);
         });
-    }else{
+    } else {
         responseObject.status = ERRORSTATUS;
         responseObject.payload = ERRORS.ERR_REQOBJ_DM;
         reject(responseObject);
@@ -66,27 +64,24 @@ loginHandlers.signUp = requestObject => new Promise((resolve,reject) =>{
 
 //login handler 
 //Params --> requestObject -- object
-loginHandlers.login = (requestObject) => new Promise((resolve,reject) =>{
-    if(typeof(requestObject) == 'object' && requestObject.hasOwnProperty('userName') && requestObject.hasOwnProperty('password'))
-    {   
-        mongo.read(dbConstants.userCollection,{userName : requestObject.userName},{projection:{_id: 0}}).then( readResult => {         
-            if(JSON.stringify(readResult) != JSON.stringify([]))  
-            {
+loginHandlers.login = (requestObject) => new Promise((resolve, reject) => {
+    if (typeof(requestObject) == 'object' && requestObject.hasOwnProperty('userName') && requestObject.hasOwnProperty('password')) {
+        mongo.read(dbConstants.userCollection, { userName: requestObject.userName }, { projection: { _id: 0 } }).then(readResult => {
+            if (JSON.stringify(readResult) != JSON.stringify([])) {
                 //encrypt login password
                 let encryptedLoginPassword = encryptionAPI.hash(requestObject.password);
                 //compare the password 
-                if(encryptedLoginPassword === readResult[0].password)
-                {
-                   //set the session      
+                if (encryptedLoginPassword === readResult[0].password) {
+                    //set the session      
                     let sessionObject = sessionHandler.createSession(requestObject.userName);
                     responseObject.status = SUCCESSSTATUS;
                     responseObject.payload = sessionObject;
-                    resolve(responseObject);    
-                }else{
-                   throw ERRORS.ERR_PASS_DM; 
+                    resolve(responseObject);
+                } else {
+                    throw ERRORS.ERR_PASS_DM;
                 }
-            }else{
-                throw ERRORS.ERR_INUSR_DM; 
+            } else {
+                throw ERRORS.ERR_INUSR_DM;
             }
         }).catch(readError => {
             responseObject.status = ERRORSTATUS;
@@ -94,7 +89,7 @@ loginHandlers.login = (requestObject) => new Promise((resolve,reject) =>{
             reject(responseObject);
         });
 
-    }else{
+    } else {
         responseObject.status = ERRORSTATUS;
         responseObject.payload = ERRORS.ERR_REQOBJ_DM;
         reject(responseObject);
@@ -103,4 +98,3 @@ loginHandlers.login = (requestObject) => new Promise((resolve,reject) =>{
 
 //export the module
 module.exports = loginHandlers;
-

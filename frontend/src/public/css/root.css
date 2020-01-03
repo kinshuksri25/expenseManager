@@ -1,0 +1,18 @@
+html,
+body,
+#root {
+    min-height: 100% !important;
+    min-width: 100% !important;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    height: 100%;
+}
+
+.centralContainer,
+.routerContainer {
+    min-height: 100% !important;
+    min-width: 100% !important;
+    background-image: linear-gradient(to left, #546573, #515f6d, #4d5966, #4a5360, #464d59, #464d59, #464d59, #464d59, #4a5360, #4d5966, #515f6d, #546573);
+    background-size: cover;
+    height: 100%;
+}

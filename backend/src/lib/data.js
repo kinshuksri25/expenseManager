@@ -10,7 +10,7 @@ let { dbConstants, ERRORS, SINGLE, MULTIPLE } = require('../../../config/dataCon
 let mongo = {};
 
 //mongo atlas url
-mongo.url = "mongodb+srv://dummysample:86588658@expenseeve-c7yv4.mongodb.net/test?retryWrites=true&w=majority";
+mongo.url = "mongodb+srv://dummysample:86588658@expenseeve-xln4n.mongodb.net/test?retryWrites=true&w=majority";
 
 //open the connection to the atlas
 mongo.openConnection = url => new Promise((resolve,reject) => {

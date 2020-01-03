@@ -1,11 +1,12 @@
 /*
-*   Primary Router File
-*/
+ *   Primary Router File
+ */
 
 //Dependencies
 let express = require('express');
 let app = express();
-var bodyParser = require('body-parser');
+let cors = require('cors')
+let bodyParser = require('body-parser');
 
 let { ERRORS, ERRORSTATUS, SUCCESSSTATUS } = require('../../../config/dataConstants');
 let domainLogicHandlers = require('./domainLogicHandlers');
@@ -18,228 +19,177 @@ let server = {};
 let requestObject = {};
 let responseObject = {};
 
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
 /*
-*   defining all the routes using express
-*/
+ *   defining all the routes using express
+ */
 
 //this is a test GET route for supertest
-app.get('/getTestRoute',function(req,res){
-    res.setHeader('Content-Type','application/json');
+app.get('/getTestRoute', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(200);
     res.end();
 });
 
 //this is a test POST route for supertest
-app.post('/postTestRoute',function(req,res){
-    res.setHeader('Content-Type','application/json');
+app.post('/postTestRoute', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(200);
     res.end();
 });
 
 //TODO --> set appropriate CORS header 
-app.post('/login',function(req,res){
+app.post('/login', function(req, res) {
     requestObject = req.body;
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader('Content-Type', 'application/json');
 
-    loginHandlers.login(requestObject).then( resolveObject => {
-        responseObject = resolveObject; 
-        res.status(200);
-        res.write(JSON.stringify(responseObject));
-        res.end();
-    }).catch( rejectObject => {
-        responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_RD_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
-        res.write(JSON.stringify(responseObject));
-        res.end();
-    });
-});
-
-app.post('/signup',function(req,res){
-    requestObject = req.body;
-
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    
-    loginHandlers.signUp(requestObject).then( resolveObject => {
+    loginHandlers.login(requestObject).then(resolveObject => {
         responseObject = resolveObject;
-        res.status(200);       
         res.write(JSON.stringify(responseObject));
         res.end();
-    }).catch( rejectObject => {
+    }).catch(rejectObject => {
         responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_RD_DB || responseObject.payload == ERRORS.ERR_WR_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
         res.write(JSON.stringify(responseObject));
         res.end();
     });
 });
 
-app.get('/getUserData',function(req,res){
+app.post('/signup', function(req, res) {
+    requestObject = req.body;
+
+    res.setHeader('Content-Type', 'application/json');
+
+    loginHandlers.signUp(requestObject).then(resolveObject => {
+        responseObject = resolveObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    }).catch(rejectObject => {
+        responseObject = rejectObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    });
+});
+
+app.get('/getUserData', function(req, res) {
     requestObject.userName = req.query.userName;
+    console.log(requestObject);
+    res.setHeader('Content-Type', 'application/json');
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-    domainLogicHandlers.getUserData(requestObject).then( resolveObject => {
-        responseObject = resolveObject;  
-        res.status(200);     
-        res.write(JSON.stringify(responseObject));
-        res.end();
-    }).catch( rejectObject => {
-        responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_RD_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
-        res.write(JSON.stringify(responseObject));
-        res.end();
-    });
-});
-
-app.post('/addExp',function(req,res){
-    requestObject = req.body;
-
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-    domainLogicHandlers.addExp(requestObject).then( resolveObject => {
+    domainLogicHandlers.getUserData(requestObject).then(resolveObject => {
         responseObject = resolveObject;
-        res.status(200);  
         res.write(JSON.stringify(responseObject));
-        res.end();     
-    }).catch( rejectObject => {
+        res.end();
+    }).catch(rejectObject => {
         responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_WR_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
         res.write(JSON.stringify(responseObject));
         res.end();
     });
 });
 
-app.put('/editExpense',function(req,res){
-    requestObject = req.body;
+app.get('/getPicture', function(req, res) {
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader('Content-Type', 'application/json');
 
-    domainLogicHandlers.editExpense(requestObject).then( resolveObject => {
+    domainLogicHandlers.getProfilePhoto().then(resolveObject => {
         responseObject = resolveObject;
-        res.status(200);       
         res.write(JSON.stringify(responseObject));
         res.end();
-    }).catch( rejectObject => {
+    }).catch(rejectObject => {
         responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_UP_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
         res.write(JSON.stringify(responseObject));
         res.end();
     });
 });
 
-app.put('/editBudget',function(req,res){
+app.post('/addExp', function(req, res) {
     requestObject = req.body;
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader('Content-Type', 'application/json');
 
-    domainLogicHandlers.editBudget(requestObject).then( resolveObject => {
-        responseObject = resolveObject; 
-        res.status(200);  
+    domainLogicHandlers.addExp(requestObject).then(resolveObject => {
+        responseObject = resolveObject;
         res.write(JSON.stringify(responseObject));
-        res.end();    
-    }).catch( rejectObject => {
+        res.end();
+    }).catch(rejectObject => {
         responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_UP_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
         res.write(JSON.stringify(responseObject));
         res.end();
     });
 });
 
-app.put('/editProfile',function(req,res){
+app.put('/editExpense', function(req, res) {
     requestObject = req.body;
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader('Content-Type', 'application/json');
+
+    domainLogicHandlers.editExpense(requestObject).then(resolveObject => {
+        responseObject = resolveObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    }).catch(rejectObject => {
+        responseObject = rejectObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    });
+});
+
+app.put('/editBudget', function(req, res) {
+    requestObject = req.body;
+
+    res.setHeader('Content-Type', 'application/json');
+
+    domainLogicHandlers.editBudget(requestObject).then(resolveObject => {
+        responseObject = resolveObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    }).catch(rejectObject => {
+        responseObject = rejectObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    });
+});
+
+app.put('/editProfile', function(req, res) {
+    requestObject = req.body;
+
+    res.setHeader('Content-Type', 'application/json');
+
+    profileHandlers.editProfile(requestObject).then(resolveObject => {
+        responseObject = resolveObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    }).catch(rejectObject => {
+        responseObject = rejectObject;
+        res.write(JSON.stringify(responseObject));
+        res.end();
+    });
+});
+
+app.put('/deleteExpenseCatagories', function(req, res) {
+    requestObject = req.body;
     
-    profileHandlers.editProfile(requestObject).then( resolveObject => {
+    res.setHeader('Content-Type', 'application/json');
+
+    domainLogicHandlers.deleteExpenseCatagory(requestObject).then(resolveObject => {
         responseObject = resolveObject;
-        res.status(200); 
         res.write(JSON.stringify(responseObject));
-        res.end();      
-    }).catch( rejectObject => {
+        res.end();
+    }).catch(rejectObject => {
         responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_UP_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
         res.write(JSON.stringify(responseObject));
         res.end();
     });
 });
-
-app.delete('/deleteExpenseCatagories',function(req,res){
-    requestObject = req.body;
-
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type','application/json');
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-    domainLogicHandlers.deleteExpenseCatagory(requestObject).then( resolveObject => {
-        responseObject = resolveObject; 
-        res.status(200);
-        res.write(JSON.stringify(responseObject));
-        res.end();      
-    }).catch( rejectObject => {
-        responseObject = rejectObject;
-        if(responseObject.payload == ERRORS.ERR_DL_DB || responseObject.payload == ERRORS.ERR_CONN_DB) 
-        {
-            res.status(500);
-        }else{
-            res.status(400);
-        }
-        res.write(JSON.stringify(responseObject));
-        res.end();
-    });
-});    
 
 //init function
 server.init = () => {
@@ -252,4 +202,4 @@ server.init = () => {
 
 
 //export the module
-module.exports = {server,app};
+module.exports = { server, app };
