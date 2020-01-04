@@ -23,7 +23,7 @@ class Modal extends Component {
     }
 
     onSubmitHandler(formObject) {
-        if(formObject.category == "" || formObject.category == "Select...")
+        if(formObject.category == "" || formObject.category == "Select Category")
         {
             this.props.setErrorMsgState(ERRORS.ERR_CATSEL_CLI);
         }else{
@@ -68,14 +68,14 @@ class Modal extends Component {
     }
 
     render() {
-        return ( <div >
+        return ( <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="modalForm">
                     <button id = "cancelAddExpense"
                     className = "cancelButton"
-                    onClick = { this.props.toggleExpenseForm } > X </button>  
+                    onClick = { this.props.toggleExpenseForm } > Cancel </button>  
                     <SimpleForm formAttributes = { formConstants.addExpense }
                     submitHandler = { this.onSubmitHandler }
                     changeFieldNames = {[]}
-                    options = {["Select...",...this.props.userObject.expenseCatagories]}/ >
+                    options = {["Select Category",...this.props.userObject.expenseCatagories]}/ >
                 </div>);
     }
 }

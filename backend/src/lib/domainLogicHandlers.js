@@ -16,7 +16,7 @@ domainLogicHandler.getProfilePhoto = () => new Promise((resolve, reject) => {
 
     mongo.read(dbConstants.photoCollection, {}, { projection: { _id: 0 } }).then(readResult => {
 
-        let pictureArr = Object.values(readResult[0]);
+        let pictureArr = readResult[0].photos;
         let randomPicturePos = Math.floor(Math.random() * pictureArr.length);
 
         responseObject.status = SUCCESSSTATUS;

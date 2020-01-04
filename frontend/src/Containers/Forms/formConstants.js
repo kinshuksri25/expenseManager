@@ -12,7 +12,7 @@ formConstants.signup = [
     {
         name: "userName",
         type: "text",
-        placeholder: "JohnDoe",
+        placeholder: "UserName",
         id: "signUpUsername",
         className: "signUpAttributes",
         isHidden: false,
@@ -21,7 +21,7 @@ formConstants.signup = [
     {
         name: "firstName",
         type: "text",
-        placeholder: "John",
+        placeholder: "FirstName",
         id: "firstName",
         className: "signUpAttributes",
         isHidden: false,
@@ -30,7 +30,7 @@ formConstants.signup = [
     {
         name: "lastName",
         type: "text",
-        placeholder: "Doe",
+        placeholder: "LastName",
         id: "lastName",
         className: "signUpAttributes",
         isHidden: false,
@@ -39,7 +39,7 @@ formConstants.signup = [
     {
         name: "occupation",
         type: "text",
-        placeholder: "FreeLancer",
+        placeholder: "Occupation",
         id: "occupation",
         className: "signUpAttributes",
         isHidden: false,
@@ -67,7 +67,7 @@ formConstants.signup = [
         name: "SignUp",
         type: "button",
         id: "signUpButton",
-        className: "signUpAttributes"
+        className: "signUpAttributes col-xs-4 col-sm-4 col-md-4 col-lg-4"
     }
 
 ];
@@ -84,9 +84,9 @@ formConstants.login = [
     {
         name: "userName",
         type: "text",
-        placeholder: "John Doe",
+        placeholder: "UserName",
         id: "signUpUsername",
-        className: "signUpAttributes",
+        className: "loginAttributes",
         isHidden: false,
         isRequired: "required"
     },
@@ -103,7 +103,7 @@ formConstants.login = [
         name: "Login",
         type: "button",
         id: "loginButton",
-        className: "loginAttributes"
+        className: "loginAttributes col-xs-4 col-sm-4 col-md-4 col-lg-4"
     }
 
 ];
@@ -120,7 +120,7 @@ formConstants.addExpense = [
     {
         name: "category",
         type: "DropDown",
-        placeholder: "Food",
+        placeholder: "Category",
         id: "category",
         className: "addExpenseAttributes",
         isHidden: false,
@@ -129,7 +129,7 @@ formConstants.addExpense = [
     {
         name: "itemName",
         type: "text",
-        placeholder: "Cakes",
+        placeholder: "Item",
         id: "itemName",
         className: "addExpenseAttributes",
         isHidden: false,
@@ -156,8 +156,8 @@ formConstants.addExpense = [
     {
         name: "AddExpense",
         type: "button",
-        id: "addExpense",
-        className: "addExpenseAttributes"
+        id: "addExp",
+        className: "col-xs-7 col-sm-7 col-md-7 col-lg-7"
     }
 
 ];

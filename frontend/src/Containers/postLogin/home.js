@@ -14,6 +14,7 @@ import ExpenseBreakDown from './expenseBreakDown';
 import Modal from './modalForm';
 import Table from '../tables/tables';
 import tableConstants from '../tables/tableConstants';
+import '../../public/css/home.css'
 
 class Home extends Component {
 
@@ -125,19 +126,31 @@ class Home extends Component {
 
     render() {
         let modalFormPlace = this.state.showExpenseForm ? < Modal toggleExpenseForm = { this.toggleExpenseForm }/>
-         : <Table tableConstants = {tableConstants.expenseTableCat} 
-                    tableValueArr ={this.props.userObject.expenses} 
-                    deletebuttonDetails = {dataConstants.deleteButtonDetails} 
-                    addbuttonDetails = {dataConstants.addButtonDetails}
-                    changeExpenseState ={this.changeExpenseState}/> ;
-        return ( <div>
-                    <BudgetOverview/>
-                    <ExpenseBreakDown/>
-                    <button className = "addExpenseButton"
-                    id = "addExpense"
-                    onClick = { this.toggleExpenseForm } >
-                    Add Expense </button> 
-                    {modalFormPlace}  
+         : 
+         <div className = "enclosure">
+            <div className = "TableContainer">
+                <Table tableConstants = {tableConstants.expenseTableCat} 
+                        tableValueArr ={this.props.userObject.expenses} 
+                        deletebuttonDetails = {dataConstants.deleteButtonDetails} 
+                        addbuttonDetails = {dataConstants.addButtonDetails}
+                        changeExpenseState ={this.changeExpenseState}/> 
+            </div>
+         </div>;
+        return ( < div className = "container homeContainer">
+                     <div className = "overviewContainer row">
+                        <BudgetOverview/>
+                        <ExpenseBreakDown/> 
+                    </div>   
+                    <div className = "expenseContainer">
+                        <div>
+                            <button className = "addExpenseButton"
+                            id = "addExpense"
+                            onClick = { this.toggleExpenseForm } 
+                            hidden = {this.state.showExpenseForm}>
+                            Add Expense </button> 
+                        </div>
+                        {modalFormPlace} 
+                    </div>
                 </div>
 
         );

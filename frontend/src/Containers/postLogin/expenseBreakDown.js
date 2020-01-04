@@ -67,11 +67,14 @@ class ExpenseBreakDown extends Component {
 				text: "Rs "+totalExpense,
                 verticalAlign: "center",
                 startAngle: 270,
-				fontSize: 20,
+				fontSize: 15,
 				dockInsidePlotArea: true
 			}],
+            width:250,
+            height:250,
 			data: [{
-				type: "doughnut",
+                type: "doughnut",
+                radius: "100px",
 				dataPoints: [...dataPoints]
 			}]};
         return options;
@@ -81,13 +84,17 @@ class ExpenseBreakDown extends Component {
         let totalExpense = this.calcTotalExpense();
         let chartOptions = this.buildBudgetChart(totalExpense);
         let renderedChart = this.props.user.expenseCatagories.length<=5 ? 
-        <CanvasJSChart options = {chartOptions}/>
+        <div className="doughnut">
+            <CanvasJSChart options = {chartOptions}/>
+        </div>
         :
-        <Table tableConstants = {tableConstants.expenseBreakDownCat} tableValueArr ={this.generateTableData()}/ >;
+        <div className="expenseTable">
+            <Table tableConstants = {tableConstants.expenseBreakDownCat} tableValueArr ={this.generateTableData()}/ >
+        </div>   
         return(
-            <div>
+            <div className = "expenseBreakDownOverview">
                 <div>
-                    <h2 className = "title">Expense Breakdown</h2>
+                    <h4 className = "title">Expense Breakdown</h4>
                     {renderedChart}
                 </div>
             </div>

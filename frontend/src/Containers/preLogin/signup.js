@@ -10,7 +10,7 @@ import SimpleForm from '../Forms/simpleform';
 import formConstants from '../Forms/formConstants';
 import localSession from '../../Components/sessionComponent';
 import * as axios from '../axios/axios';
-
+import "../../public/css/signup.css";
 
 class SignUp extends Component {
 
@@ -68,7 +68,7 @@ class SignUp extends Component {
         return "";
     };
     render() {
-        return ( < div >
+        return ( < div className = "signUpContainer">
                     <SimpleForm formAttributes = { formConstants.signup }
                     submitHandler = { this.onSubmitHandler }
                     changeFieldNames = {[]}/> 

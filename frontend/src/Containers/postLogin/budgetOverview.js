@@ -32,11 +32,14 @@ class BudgetOverview extends Component {
 				text: percentSpent+"% spent",
                 verticalAlign: "center",
                 startAngle: 270,
-				fontSize: 20,
+				fontSize: 15,
 				dockInsidePlotArea: true
-			}],
+            }],
+            width:250,
+            height:250,
 			data: [{
-				type: "doughnut",
+                type: "doughnut",
+                radius: "100px",
 				dataPoints: [
 					{ name: "TotalExpense", y: totalExpense },
 					{ name: "Remaining", y: (budget - totalExpense)}
@@ -49,16 +52,18 @@ class BudgetOverview extends Component {
         let totalExpense = this.calcTotalExpense();
         let chartOptions = this.buildBudgetChart(totalExpense);
         return(
-            <div>
-                <div>
-                    <h2 className = "title">Budget Overview</h2>
-                </div>
-                <CanvasJSChart options = {chartOptions}/>
-                <div>
-                    <h3>Total Budget:</h3>
-                    <span><p>{this.props.user.budget}</p></span>
-                    <h3>Total Expense:</h3>
-                    <span><p>{totalExpense}</p></span>    
+            <div className = "budgetOverviewContainer">
+                <h4 className = "title">Budget Overview</h4>
+                <div className="row">
+                    <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <CanvasJSChart options = {chartOptions}/>
+                    </div>
+                    <div className = "col-xs-4 col-sm-4 col-md-4 col-lg-4 doughnutBody">
+                        <h5>Total Budget:</h5>
+                        <span><p>{this.props.user.budget}</p></span>
+                        <h5>Total Expense:</h5>
+                        <span><p>{totalExpense}</p></span>    
+                    </div>
                 </div>
             </div>
         );

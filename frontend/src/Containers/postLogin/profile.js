@@ -9,6 +9,7 @@ import localSession from '../../Components/sessionComponent';
 import * as actions from '../../store/user/actions';
 import { actionTypes } from '../../store/user/types';
 import * as axios from '../axios/axios';
+import "../../public/css/profile.css";
 
 class Profile extends Component {
 
@@ -84,7 +85,6 @@ class Profile extends Component {
             if (resolve.status == "SUCCESS") {
                 //add the dispatchers
                 this.setState({ profilePhoto: resolve.payload });
-
             } else {
                 this.props.setErrorMsgState(ERRORS.ERR_BCKERR_CLI);
             }
@@ -111,7 +111,7 @@ class Profile extends Component {
                     axios.axiosPUT('/editProfile', profileChangeObject).then((resolve) => {
                         if (resolve.status == "SUCCESS") {
                             //add the dispatchers
-                            this.props.editUserDetails(resolve.payload, actionTypes.EDITOCCUPATION);
+                            this.props.editOccupation(resolve.payload, actionTypes.EDITOCCUPATION);
                             this.stateSetter();
                         } else {
                             this.props.setErrorMsgState(resolve.payload);
@@ -131,7 +131,7 @@ class Profile extends Component {
                     profileChangeObject.changeVal = this.state.userName;
                     axios.axiosPUT('/editProfile', profileChangeObject).then((resolve) => {
                         if (resolve.status == "SUCCESS") {
-                            this.props.editUserDetails(resolve.payload, actionTypes.EDITUSERNAME);
+                            this.props.editUserName(resolve.payload, actionTypes.EDITUSERNAME);
                             this.stateSetter();
                         } else {
                             this.props.setErrorMsgState(resolve.payload);
@@ -154,7 +154,7 @@ class Profile extends Component {
                         axios.axiosPUT('/editProfile', profileChangeObject).then((resolve) => {
                             if (resolve.status == "SUCCESS") {
                                 //add the dispatchers
-                                this.props.editUserDetails(resolve.payload, actionTypes.EDITPASSWORD);
+                                this.props.editPassword(resolve.payload, actionTypes.EDITPASSWORD);
                                 this.stateSetter();
                             } else {
                                 this.props.setErrorMsgState(resolve.payload);
@@ -215,56 +215,67 @@ class Profile extends Component {
         let occupationBtnBool = this.state.occupation != this.props.userObject.occupation && this.state.occupation != "" ? false : true;
         let userNameBtnBool = this.state.userName != this.props.userObject.userName && this.state.userName != "" ? false : true;
         let passwordBtnBool = (this.state.password != this.props.userObject.password || this.state.password != "") || this.state.confirmPassword != "" ? false : true;
-        return ( < div >
-                    <img src = { this.state.profilePhoto }/>  
-                    <input type = "text"
-                    name = "firstName"
-                    placeholder = "FirstName"
-                    id = "firstName"
-                    value = { this.props.userObject.firstName }
-                    disabled = { true }/>  
-                    <input type = "text"
-                    name = "lastName"
-                    placeholder = "LastName"
-                    id = "lastName"
-                    value = { this.props.userObject.lastName }
-                    disabled = { true }/>  
-                    <form id = "occupationChange"
-                    onSubmit = { this.onSubmitHandler }>
+        return ( < div className = "profileContainer">
+                    <div className = "col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <img src = { this.state.profilePhoto } className="img"/>  
+                    </div>
+                    <div className = "profileDetails col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <input type = "text"
-                        name = "occupation"
-                        placeholder = "occupation"
-                        id = "occupation"
-                        value = { this.state.occupation }
-                        onChange = { this.onChangeHandler }/> 
-                        <button hidden = { occupationBtnBool }> Update </button> 
-                    </form> 
-                    <form id = "userNameChange"
-                    onSubmit = { this.onSubmitHandler }>
+                        className = "profileForm"
+                        name = "firstName"
+                        placeholder = "FirstName"
+                        id = "firstName"
+                        value = { this.props.userObject.firstName }
+                        disabled = { true }/>  
                         <input type = "text"
-                        name = "userName"
-                        placeholder = "userName"
-                        id = "userName"
-                        value = { this.state.userName }
-                        onChange = { this.onChangeHandler }/>  
-                        <button hidden = { userNameBtnBool }> Update </button>  
-                    </form> 
-                    <form id = "passwordChange"
-                    onSubmit = { this.onSubmitHandler }>
-                        <input type = "password"
-                        name = "password"
-                        placeholder = "*********"
-                        id = "password"
-                        value = { this.state.password }
-                        onChange = { this.onChangeHandler }/>  
-                        <input type = "password"
-                        name = "confirmPassword"
-                        placeholder = "*********"
-                        id = "confirmPassword"
-                        value = { this.state.confirmPassword }
-                        onChange = { this.onChangeHandler }/>  
-                        <button disabled = { passwordBtnBool }> Update </button>  
-                    </form> 
+                        className = "profileForm"
+                        name = "lastName"
+                        placeholder = "LastName"
+                        id = "lastName"
+                        value = { this.props.userObject.lastName }
+                        disabled = { true }/>  
+                        <form id = "occupationChange"
+                        onSubmit = { this.onSubmitHandler }>
+                            <input type = "text"
+                            name = "occupation"
+                            className = "profileForm"
+                            placeholder = "occupation"
+                            id = "occupation"
+                            value = { this.state.occupation }
+                            onChange = { this.onChangeHandler }/> 
+                            <button className="changeButton" hidden = { occupationBtnBool }> Update </button> 
+                        </form> 
+                        <form id = "userNameChange"
+                        onSubmit = { this.onSubmitHandler }>
+                            <input type = "text"
+                            className = "profileForm"
+                            name = "userName"
+                            placeholder = "userName"
+                            id = "userName"
+                            value = { this.state.userName }
+                            onChange = { this.onChangeHandler }/>  
+                            <button className="changeButton" hidden = { userNameBtnBool }> Update </button>  
+                        </form> 
+                        <form id = "passwordChange"
+                        onSubmit = { this.onSubmitHandler }>
+                            <input type = "password"
+                            className = "profileForm"
+                            name = "password"
+                            placeholder = "*********"
+                            id = "password"
+                            value = { this.state.password }
+                            onChange = { this.onChangeHandler }
+                            required = {true}/>  
+                            <input type = "password"
+                            name = "confirmPassword"
+                            placeholder = "*********"
+                            id = "confirmPassword"
+                            value = { this.state.confirmPassword }
+                            onChange = { this.onChangeHandler }
+                            required = {true}/>  
+                            <button disabled = { passwordBtnBool } id="updatePass" className="col-xs-4 col-sm-4 col-md-4 col-lg-4"> Update Password</button>  
+                        </form> 
+                    </div>
                 </div>);
     }
 }

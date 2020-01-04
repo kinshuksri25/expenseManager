@@ -30,7 +30,6 @@ profileHandlers.editProfile = (requestObject) => new Promise((resolve, reject) =
         mongo.update(dbConstants.userCollection, { userName: requestObject.userName }, { $set: userObject }, {}, SINGLE).then(updateResult => {
             responseObject.status = SUCCESSSTATUS;
             responseObject.payload = requestObject.changeVal;
-            console.log(responseObject);
             resolve(responseObject);
         }).catch(rejectResult => {
             responseObject.status = ERRORSTATUS;

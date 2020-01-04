@@ -82,7 +82,6 @@ app.post('/signup', function(req, res) {
 
 app.get('/getUserData', function(req, res) {
     requestObject.userName = req.query.userName;
-    console.log(requestObject);
     res.setHeader('Content-Type', 'application/json');
 
     domainLogicHandlers.getUserData(requestObject).then(resolveObject => {

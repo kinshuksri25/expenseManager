@@ -5,7 +5,7 @@ import { hot } from "react-hot-loader";
 import Home from '../../Containers/postLogin/home';
 import Settings from '../../Containers/postLogin/settings';
 import Profile from '../../Containers/postLogin/profile';
-
+import "../../public/css/postloginContainer.css";
 
 
 export default function PostLoginRouter () {

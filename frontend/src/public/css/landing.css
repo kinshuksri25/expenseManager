@@ -1,0 +1,21 @@
+.landingContainer {
+    margin: 20% 30%;
+}
+
+.landingTitle,
+.landingSubheading,
+.landingText {
+    text-align: center;
+}
+
+.landingTitle {
+    color: #f9f871;
+}
+
+.landingSubheading {
+    color: #dfa8cd;
+}
+
+.landingText {
+    color: #a1e592;
+}

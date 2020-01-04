@@ -9,7 +9,7 @@ import localSession from '../../Components/sessionComponent';
 import * as actions from '../../store/user/actions';
 import { actionTypes } from '../../store/user/types';
 import * as axios from '../axios/axios';
-
+import "../../public/css/settings.css";
 
 
 class Settings extends Component {
@@ -32,7 +32,7 @@ class Settings extends Component {
 
     stateSetter() {
         //set the local state 
-        let { budget, expenseCatagories } = this.props.user;
+        let {budget,expenseCatagories} = this.props.user;
         this.setState({
             userBudget: budget,
             expenseCatagories: expenseCatagories
@@ -144,11 +144,11 @@ class Settings extends Component {
         });
         let requestObject = {};
         requestObject.userName = userName;
-        requestObject.expenseCatagories = event.target.className;
+        requestObject.expenseCatagories = event.target.id;
         
         let delExpArr = [];
         userObject.expenses.map(expense =>{ 
-            if(expense.category == event.target.className)       
+            if(expense.category == event.target.id)       
             delExpArr.push(expense);  
         });
         requestObject.expenses = delExpArr
@@ -171,10 +171,10 @@ class Settings extends Component {
     listGenerator() {
         let expenseCatagories = this.state.expenseCatagories;
         return (expenseCatagories.map(expenseCatagory => {
-            return ( <div id = { expenseCatagory } >
-                        <li className = { expenseCatagory } > { expenseCatagory } </li> 
-                        <button onClick = { this.deleteExpenseCatagoryHandler }
-                        className = { expenseCatagory } > delete </button>
+            return ( <div className="row expenseCatListContainer" >
+                        <li className = "expenseCatList" > { expenseCatagory } </li> 
+                        <button className = "expenseCatBut" id= {expenseCatagory} 
+                        onClick = { this.deleteExpenseCatagoryHandler }> delete </button>    
                     </div>);
             }));
     }
@@ -183,7 +183,7 @@ class Settings extends Component {
         let buttonStateBudget = this.props.user.budget == this.state.userBudget ? true : false;
         let buttonStateExpense = this.state.addExpenseCatagory == "" ? true : false;
 
-        return ( <div>
+        return ( <div className = "settingsContainer">
                     <form className = "settingsForm"
                     id = "budgetChangeForm"
                     onSubmit = { this.onSubmitHandler }>
@@ -205,7 +205,7 @@ class Settings extends Component {
                     <input type = "text"
                     name = "expenseCatagory"
                     value = { this.state.addExpenseCatagory }
-                    placeholder = ""
+                    placeholder = "Food"
                     id = "expenseCatagory"
                     required = { true }
                     onChange = { this.onChangeHandler }/> 

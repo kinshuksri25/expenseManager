@@ -1,0 +1,137 @@
+.homeContainer {
+    min-height: 100% !important;
+    min-width: 100% !important;
+    margin: 15px 10px;
+}
+
+.budgetOverviewContainer,
+.expenseBreakDownOverview {
+    background-color: white;
+    height: 300px;
+    width: 500px;
+    border-radius: 15px;
+}
+
+.overviewContainer {
+    margin: 20px 0px;
+    height: 300px;
+    width: 100%;
+}
+
+.budgetOverviewContainer {
+    margin-left: 4%;
+    margin-right: 2%;
+}
+
+.expenseBreakDownOverview {
+    margin-left: 2%;
+}
+
+.doughnut {
+    margin-left: 25%;
+}
+
+.title {
+    text-align: center;
+}
+
+.doughnutBody {
+    margin-top: 10%;
+}
+
+.expenseTable {
+    margin-top: 5%;
+    margin-left: 32%;
+    border: 1px solid black;
+    width: 35%;
+}
+
+.addExpenseButton {
+    margin-left: 43%;
+    border: 1px solid #21413d;
+    border-radius: 3px;
+    height: 30px;
+}
+
+.addExpenseButton:hover,
+.addExpenseButton:active,
+.addExpenseButton:visited {
+    background-color: #21413d;
+    color: white;
+}
+
+.TableContainer {
+    height: 230px;
+    width: 100%;
+    margin-top: 1%;
+    background-color: white;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 2%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.enclosure {
+    margin-top: 1%;
+    margin-left: 25%;
+    width: 45%;
+    background-color: white;
+    border-radius: 15px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.tableEditButton {
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 30px;
+}
+
+#modalForm {
+    width: 25%;
+    margin-left: 36%;
+    margin-top: 2%;
+    background-color: white;
+    border-radius: 15px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3.5%;
+    padding-right: 2%;
+}
+
+#cancelAddExpense {
+    margin-left: 30%;
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 30px;
+    margin-bottom: 2%;
+}
+
+.addExpenseAttributes,
+#category {
+    margin-top: 3%;
+    width: 200px;
+}
+
+#addExp {
+    margin-left: 15%;
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 30px;
+    margin-top: 3%;
+}
+
+th {
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+tr {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: lightblue;
+}
