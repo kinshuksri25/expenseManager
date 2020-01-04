@@ -31,6 +31,12 @@ buttonConstants.postLogin = [{
         id: "profile",
         className: "cl_postLogin",
         name: "Profile"
+    },
+    {
+        link: "/landing",
+        id: "logout",
+        className: "cl_postLogin",
+        name: "Logout"
     }
 ];
 

@@ -1,6 +1,11 @@
 //Dependencies
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
+import { connect } from 'react-redux';
+
+import {actionTypes} from "../../store/user/types";
+import {setErrorMsg} from "../../store/user/actions";
+import {ERRORS} from "../../../../config/dataConstants";
 import SimpleForm from '../Forms/simpleform';
 import formConstants from '../Forms/formConstants';
 import localSession from '../../Components/sessionComponent';
@@ -29,20 +34,20 @@ class Login extends Component {
                     //set the session
                     var session = localSession;
                     var sessionObject = session.setSessionObject(resolve.payload);
-                    //post login form
+
                     window.location.pathname = "/dashboard/home";
                 } else {
-                    console.log(resolve.payload);
+                    this.props.setErrorMsgState(resolve.payload);
                 }
             }).catch(reject => {
-                console.log(reject);
+                this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
             }).finally(() => {
                 this.setState({
                     isLoading: false
                 });
             });
         } else {
-            //invalid object
+                console.log(ERRORS.ERR_INVOBJ_CLI);
         }
 
     }
@@ -57,4 +62,13 @@ class Login extends Component {
 
 }
 
-export default Login;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setErrorMsgState: (errorPayload) => {
+            dispatch(setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
+        }
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -12,6 +12,11 @@ userConstants.initUserObject = {
     expenses: []
 };
 
+
+userConstants.initErrorMsgObject = {
+    errorMsg : ""
+};
+
 userConstants.actionTypes = {
     SETINIUSERDATA: "SETINIUSERDATA",
     EDITOCCUPATION: "EDITOCCUPATION",
@@ -22,6 +27,7 @@ userConstants.actionTypes = {
     DELETEEXPENSECAT: "DELETEEXPENSECAT",
     EDITBUDGET: "EDITBUDGET",
     EDITEXPENSE: "EDITEXPENSE",
+    SETERRORMSG: "SETERRORMSG"
 }
 
 //export the module 

@@ -11,3 +11,10 @@ export function editUserDetails(userPayload, USERACTIONS) {
         payload: userPayload
     });
 };
+
+export function setErrorMsg(errorPayload, ERRORACTION) {
+    return ({
+        type: ERRORACTION,
+        payload: errorPayload
+    });
+};

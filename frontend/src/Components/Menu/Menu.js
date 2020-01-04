@@ -32,6 +32,7 @@ function loadPage(event) {
             props.rerender();
         }
     });
+    event.target.id == "logout" && window.localStorage.clear();
 }
     return ( <div className="combinedContainer"> { createButton() } </div>);
 };

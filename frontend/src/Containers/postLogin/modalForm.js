@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
+import {ERRORS} from "../../../../config/dataConstants";
 import localSession from '../../Components/sessionComponent';
 import * as axios from '../axios/axios';
 import { actionTypes } from '../../store/user/types';
@@ -23,7 +25,7 @@ class Modal extends Component {
     onSubmitHandler(formObject) {
         if(formObject.category == "" || formObject.category == "Select...")
         {
-            console.log("Please select a category");
+            this.props.setErrorMsgState(ERRORS.ERR_CATSEL_CLI);
         }else{
             delete formObject.AddExpense;
             formObject.state = true;
@@ -49,10 +51,10 @@ class Modal extends Component {
                         if (resolve.status == "SUCCESS") {
                             this.props.addExpense(resolve.payload);
                         } else {
-                            console.log(resolve.payload);
+                            this.props.setErrorMsgState(resolve.payload);
                         }
                     }).catch(reject => {
-                        console.log(reject);
+                        this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                     }).finally(() => {
                         this.setState({
                             isLoading: false
@@ -60,7 +62,7 @@ class Modal extends Component {
                         this.props.toggleExpenseForm(); 
                     });
             } else {
-                console.log("Budget Exceeded!");
+                this.props.setErrorMsgState(dataConstants.ERRORS.ERR_BUDEXX_CLI);
             }
         }
     }
@@ -80,7 +82,7 @@ class Modal extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userObject: {...state }
+        userObject: {...state.userStateReducer}
     }
 };
 
@@ -88,6 +90,9 @@ const mapDispatchToProps = dispatch => {
     return {
         addExpense: (userObject) => {
             dispatch(actions.editUserDetails(userObject, actionTypes.ADDEXPENSE));
+        },
+        setErrorMsgState: (errorPayload) => {
+            dispatch(actions.setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
         }
     };
 };

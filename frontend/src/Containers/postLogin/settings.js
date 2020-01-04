@@ -2,11 +2,14 @@
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
+import {ERRORS} from "../../../../config/dataConstants";
 import localSession from '../../Components/sessionComponent';
-import * as axios from '../axios/axios';
-import { actionTypes } from '../../store/user/types';
 import * as actions from '../../store/user/actions';
+import { actionTypes } from '../../store/user/types';
+import * as axios from '../axios/axios';
+
 
 
 class Settings extends Component {
@@ -52,20 +55,18 @@ class Settings extends Component {
                 isLoading: true
             });
             axios.axiosGET('/getUserData?userName=' + userName, {}, {}).then(resolve => {
-                //TODO -> need to add DC file
                 if (resolve.status != "ERROR") {
                     if (JSON.stringify(resolve.payload) != JSON.stringify({})) {
                         this.props.setInitState(resolve.payload);
                         this.stateSetter();
                     } else {
-                        //TODO -> need to add a new error for this 
-                        throw resolve.status;
+                        this.props.setErrorMsgState(ERRORS.ERR_BCKERR_CLI);
                     }
                 } else {
-                    throw resolve.payload;
+                    this.props.setErrorMsgState(resolve.payload);
                 }
             }).catch(reject => {
-                console.log(reject);
+                this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
             }).finally(() => {
                 this.setState({
                     isLoading: false
@@ -103,10 +104,10 @@ class Settings extends Component {
                         this.props.editBudget(resolve.payload);
                         this.stateSetter();
                     } else {
-                        console.log(resolve.payload);
+                        this.props.setErrorMsgState(resolve.payload);
                     }
                 }).catch(reject => {
-                    console.log(reject);
+                    this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                 }).finally(() => {
                     this.setState({
                         isLoading: false
@@ -122,10 +123,10 @@ class Settings extends Component {
                         this.props.addExpenseCatagories(resolve.payload);
                         this.stateSetter();
                     } else {
-                        console.log(resolve.payload);
+                        this.props.setErrorMsgState(resolve.payload);
                     }
                 }).catch(reject => {
-                    console.log(reject);
+                    this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                 }).finally(() => {
                     this.setState({
                         isLoading: false
@@ -156,10 +157,10 @@ class Settings extends Component {
                       this.props.deleteExpenseCatagories(resolve.payload);
                       this.stateSetter();
                 } else {
-                    console.log(resolve.payload);
+                    this.props.setErrorMsgState(resolve.payload);
                 }
             }).catch(reject => {
-                console.log(reject);
+                this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
             }).finally(() => {
                 this.setState({
                     isLoading: false
@@ -179,7 +180,7 @@ class Settings extends Component {
     }
 
     render() {
-        let buttonStateBudget = this.props.budget == this.state.userBudget ? true : false;
+        let buttonStateBudget = this.props.user.budget == this.state.userBudget ? true : false;
         let buttonStateExpense = this.state.addExpenseCatagory == "" ? true : false;
 
         return ( <div>
@@ -220,9 +221,7 @@ class Settings extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: {...state },
-        budget : state.budget,
-
+        user: {...state.userStateReducer}
     }
 };
 
@@ -239,6 +238,9 @@ const mapDispatchToProps = dispatch => {
         },
         deleteExpenseCatagories: (value) => {
             dispatch(actions.editUserDetails(value, actionTypes.DELETEEXPENSECAT));
+        },
+        setErrorMsgState: (errorPayload) => {
+            dispatch(actions.setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
         }
     };
 };

@@ -24,7 +24,7 @@ class BudgetOverview extends Component {
     }
 
     buildBudgetChart(totalExpense){
-        let budget = this.props.budget;
+        let budget = this.props.user.budget;
         let percentSpent = Math.floor((totalExpense/budget)*100);
         let options = {			
             animationEnabled: true,
@@ -56,7 +56,7 @@ class BudgetOverview extends Component {
                 <CanvasJSChart options = {chartOptions}/>
                 <div>
                     <h3>Total Budget:</h3>
-                    <span><p>{this.props.budget}</p></span>
+                    <span><p>{this.props.user.budget}</p></span>
                     <h3>Total Expense:</h3>
                     <span><p>{totalExpense}</p></span>    
                 </div>
@@ -67,9 +67,7 @@ class BudgetOverview extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: {...state },
-        budget : state.budget,
-
+        user:  {...state.userStateReducer}
     }
 };
 

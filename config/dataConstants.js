@@ -28,7 +28,13 @@ dataConstants.ERRORS = {
 
     //CLIENT-SIDE ERRORS
     "ERR_MNOJ_CLI": "Invalid menu object,unable to render menu component",
-
+    "ERR_BCKERR_CLI": "Unable to get data",
+    "ERR_NET_CLI": "Unable to connect to the network",
+    "ERR_INVOBJ_CLI" : "Invalid form object",
+    "ERR_INPASS_CLI" : "The password should contain an uppercase, a lowecase, a digit and should be atleast 8 characters long",
+    "ERR_PASSMIS_CLI": "Password and Confirm-Password should match",
+    "ERR_BUDEXX_CLI" : "Budget Exceeded",
+    "ERR_CATSEL_CLI" :"Please select a catagory",
     //INTERNAL ERRORS
     "ERR_USR_DM": "The username already exists unable to signup the user",
     "ERR_INUSR_DM": "The username is invalid unable to login the user",

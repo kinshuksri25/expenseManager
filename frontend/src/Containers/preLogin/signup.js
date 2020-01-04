@@ -1,12 +1,16 @@
 //Dependencies
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
+import { connect } from 'react-redux';
+
+import {actionTypes} from "../../store/user/types";
+import {setErrorMsg} from "../../store/user/actions";
+import {ERRORS} from "../../../../config/dataConstants";
 import SimpleForm from '../Forms/simpleform';
 import formConstants from '../Forms/formConstants';
 import localSession from '../../Components/sessionComponent';
 import * as axios from '../axios/axios';
 
-//sessionComponent has to be added to dependencies
 
 class SignUp extends Component {
 
@@ -22,12 +26,8 @@ class SignUp extends Component {
             delete formObject.SignUp;
             if (formObject.hasOwnProperty('userName') && formObject.hasOwnProperty('firstName') && formObject.hasOwnProperty('lastName') && formObject.hasOwnProperty('occupation') && formObject.hasOwnProperty('password') && formObject.hasOwnProperty('confirmPassword')) {
                 //password check
-                var errorMsgObject = this.checkPasswordValidity(formObject.password, formObject.confirmPassword);
-                //set the state!
-                this.setState({
-                    "errorMsgObject": errorMsgObject
-                }, () => {
-                    if (JSON.stringify(errorMsgObject) == JSON.stringify({})) {
+                var errorMsg = this.checkPasswordValidity(formObject.password, formObject.confirmPassword);
+                    if (errorMsg =="") {
                         this.setState({
                             isLoading: true
                         });
@@ -40,44 +40,32 @@ class SignUp extends Component {
                                 //post login form
                                 window.location.pathname = "/dashboard/home";
                             } else {
-                                console.log(resolve);
+                                this.props.setErrorMsgState(resolve.status);
                             }
                         }).catch(reject => {
-                            console.log(reject);
+                            this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                         }).finally(() => {
                             this.setState({
                                 isLoading: false
                             });
                         });
                     } else {
-                        //incorrect password
-                        console.log(errorMsgObject);
+                        this.props.setErrorMsgState(errorMsg);
                     }
-                });
             } else {
-                //invalid formObject
+                console.log(ERRORS.ERR_INVOBJ_CLI);
             }
         }
         //check password
     checkPasswordValidity(password, confirmPassword) {
-        var errorMsgObject = {};
         //check password validity
-        if (password.match(/[a-z]/g) == null) {
-            errorMsgObject.invalidPassLower = "The password should contain a lowercase character";
-        }
-        if (password.match(/[A-Z]/g) == null) {
-            errorMsgObject.invalidPassUpper = "The password should contain an uppercase character";
-        }
-        if (password.match(/[0-9]/g) == null) {
-            errorMsgObject.invalidPassDigit = "The password should contain a digit";
-        }
-        if (password.length < 8) {
-            errorMsgObject.shortPassword = "The password should be atleast 8 characters long";
+        if (password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])\S{8},}$/g) == null) {
+            return ERRORS.ERR_INPASS_CLI;
         }
         if (password != confirmPassword) {
-            errorMsgObject.passwordMisMatch = "Password and Confirm-Password should match";
+            return ERRORS.ERR_PASSMIS_CLI;
         }
-        return errorMsgObject;
+        return "";
     };
     render() {
         return ( < div >
@@ -88,4 +76,12 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+const mapDispatchToProps = dispatch => {
+    return {
+        setErrorMsgState: (errorPayload) => {
+            dispatch(setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
+        }
+    };
+};
+
+export default connect(null, mapDispatchToProps)(SignUp);

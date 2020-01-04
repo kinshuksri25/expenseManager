@@ -1,4 +1,4 @@
-import { actionTypes, initUserObject } from './types'
+import { actionTypes, initUserObject, initErrorMsgObject } from './types'
 
 export function userStateReducer(state = initUserObject, action) {
     switch (action.type) {
@@ -62,3 +62,11 @@ export function userStateReducer(state = initUserObject, action) {
             }
     }
 };
+
+export function errorMsgReducer(state = initErrorMsgObject, action){
+    if(action.type == actionTypes.SETERRORMSG){
+        return {...state, errorMsg:action.payload};
+    }else{
+        return{...state};
+    }
+}

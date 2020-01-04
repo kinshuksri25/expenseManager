@@ -4,10 +4,10 @@ import { hot } from "react-hot-loader";
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import {ERRORS} from "../../../../config/dataConstants";
 import localSession from '../../Components/sessionComponent';
 import * as actions from '../../store/user/actions';
 import { actionTypes } from '../../store/user/types';
-import { setinitState } from '../../store/user/actions';
 import * as axios from '../axios/axios';
 
 class Profile extends Component {
@@ -22,6 +22,7 @@ class Profile extends Component {
             profilePhoto: "",
             isLoading: false
         }
+        this.initUserSetter = this.initUserSetter.bind(this);
         this.stateSetter = this.stateSetter.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -32,18 +33,16 @@ class Profile extends Component {
     stateSetter() {
         //set the local state 
         this.setState({
-            userName: this.props.userName,
-            occupation: this.props.occupation,
+            userName: this.props.userObject.userName,
+            occupation: this.props.userObject.occupation,
         });
     }
 
     componentDidMount() {
-        if (this.props.userName == "") {
+        if (this.props.userObject.userName == "") {
             this.initUserSetter();
         }
-        //set the profile picture
         this.pictureSetter();
-        //set the initialState
         this.stateSetter();
     }
 
@@ -60,13 +59,13 @@ class Profile extends Component {
                         this.props.setInitState(resolve.payload);
                         this.stateSetter();
                     } else {
-                        throw resolve.status;
+                        this.props.setErrorMsgState(ERRORS.ERR_BCKERR_CLI);
                     }
                 } else {
-                    throw resolve.payload;
+                    this.props.setErrorMsgState(resolve.payload);
                 }
             }).catch(reject => {
-                console.log(reject);
+                this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
             }).finally(() => {
                 this.setState({
                     isLoading: false
@@ -87,10 +86,10 @@ class Profile extends Component {
                 this.setState({ profilePhoto: resolve.payload });
 
             } else {
-                console.log(resolve.payload);
+                this.props.setErrorMsgState(ERRORS.ERR_BCKERR_CLI);
             }
         }).catch(reject => {
-            console.log(reject);
+            this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
         }).finally(() => {
             this.setState({
                 isLoading: false
@@ -115,10 +114,10 @@ class Profile extends Component {
                             this.props.editUserDetails(resolve.payload, actionTypes.EDITOCCUPATION);
                             this.stateSetter();
                         } else {
-                            console.log(resolve.payload);
+                            this.props.setErrorMsgState(resolve.payload);
                         }
                     }).catch(reject => {
-                        console.log(reject);
+                        this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                     }).finally(() => {
                         this.setState({
                             isLoading: false
@@ -132,14 +131,13 @@ class Profile extends Component {
                     profileChangeObject.changeVal = this.state.userName;
                     axios.axiosPUT('/editProfile', profileChangeObject).then((resolve) => {
                         if (resolve.status == "SUCCESS") {
-                            //add the dispatchers
                             this.props.editUserDetails(resolve.payload, actionTypes.EDITUSERNAME);
                             this.stateSetter();
                         } else {
-                            console.log(resolve.payload);
+                            this.props.setErrorMsgState(resolve.payload);
                         }
                     }).catch(reject => {
-                        console.log(reject);
+                        this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                     }).finally(() => {
                         this.setState({
                             isLoading: false
@@ -151,22 +149,25 @@ class Profile extends Component {
                 {
                     profileChangeObject.changeVar = "password";
                     profileChangeObject.changeVal = this.state.password;
-                    if (JSON.stringify(checkPasswordValidity(this.state.password, this.state.confirmPassword)) == JSON.stringify({})) {
+                    var errorMsg = this.checkPasswordValidity(formObject.password, formObject.confirmPassword);
+                    if (errorMsg =="") {
                         axios.axiosPUT('/editProfile', profileChangeObject).then((resolve) => {
                             if (resolve.status == "SUCCESS") {
                                 //add the dispatchers
                                 this.props.editUserDetails(resolve.payload, actionTypes.EDITPASSWORD);
                                 this.stateSetter();
                             } else {
-                                console.log(resolve.payload);
+                                this.props.setErrorMsgState(resolve.payload);
                             }
                         }).catch(reject => {
-                            console.log(reject);
+                            this.props.setErrorMsgState(ERRORS.ERR_NET_CLI);
                         }).finally(() => {
                             this.setState({
                                 isLoading: false
                             });
                         });
+                    }else {
+                        this.props.setErrorMsgState(errorMsg);
                     }
                     break;
                 }
@@ -174,26 +175,17 @@ class Profile extends Component {
         }
     }
 
-    checkPasswordValidity(password, confirmPassword) {
-        var errorMsgObject = {};
-        //check password validity
-        if (password.match(/[a-z]/g).length == 0) {
-            errorMsgObject.invalidPassLower = "The password should contain a lowercase character";
-        }
-        if (password.match(/[A-Z]/g).length == 0) {
-            errorMsgObject.invalidPassUpper = "The password should contain an uppercase character";
-        }
-        if (password.match(/[0-9]/g).length == 0) {
-            errorMsgObject.invalidPassDigit = "The password should contain a digit";
-        }
-        if (password.length < 8) {
-            errorMsgObject.shortPassword = "The password should be atleast 8 characters long";
-        }
-        if (password != confirmPassword) {
-            errorMsgObject.passwordMisMatch = "Password and Confirm-Password should match";
-        }
-        return errorMsgObject;
-    };
+        //check password
+        checkPasswordValidity(password, confirmPassword) {
+            //check password validity
+            if (password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])\S{8},}$/g) == null) {
+                return ERRORS.ERR_INPASS_CLI;
+            }
+            if (password != confirmPassword) {
+                return ERRORS.ERR_PASSMIS_CLI;
+            }
+            return "";
+        };
 
     onChangeHandler(event) {
         switch (event.target.id) {
@@ -220,22 +212,22 @@ class Profile extends Component {
     }
 
     render() {
-        let occupationBtnBool = this.state.occupation != this.props.occupation && this.state.occupation != "" ? false : true;
-        let userNameBtnBool = this.state.userName != this.props.userName && this.state.userName != "" ? false : true;
-        let passwordBtnBool = (this.state.password != this.props.password || this.state.password != "") || this.state.confirmPassword != "" ? false : true;
+        let occupationBtnBool = this.state.occupation != this.props.userObject.occupation && this.state.occupation != "" ? false : true;
+        let userNameBtnBool = this.state.userName != this.props.userObject.userName && this.state.userName != "" ? false : true;
+        let passwordBtnBool = (this.state.password != this.props.userObject.password || this.state.password != "") || this.state.confirmPassword != "" ? false : true;
         return ( < div >
                     <img src = { this.state.profilePhoto }/>  
                     <input type = "text"
                     name = "firstName"
                     placeholder = "FirstName"
                     id = "firstName"
-                    value = { this.props.firstName }
+                    value = { this.props.userObject.firstName }
                     disabled = { true }/>  
                     <input type = "text"
                     name = "lastName"
                     placeholder = "LastName"
                     id = "lastName"
-                    value = { this.props.lastName }
+                    value = { this.props.userObject.lastName }
                     disabled = { true }/>  
                     <form id = "occupationChange"
                     onSubmit = { this.onSubmitHandler }>
@@ -278,11 +270,7 @@ class Profile extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        firstName: state.firstName,
-        lastName: state.lastName,
-        userName: state.userName,
-        occupation: state.occupation,
-        password: state.password
+            userObject : {...state.userStateReducer}
     }
 };
 
@@ -299,6 +287,9 @@ const mapDispatchToProps = dispatch => {
         },
         setInitState: (userObject) => {
             dispatch(actions.editUserDetails(userObject, actionTypes.SETINIUSERDATA));
+        },
+        setErrorMsgState: (errorPayload) => {
+            dispatch(actions.setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
         }
     }
 };

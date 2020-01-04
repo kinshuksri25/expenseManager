@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import dataConstants from "../../../../config/dataConstants";
 import localSession from '../../Components/sessionComponent';
 import * as axios from '../axios/axios';
 import { actionTypes } from '../../store/user/types';
-import { setinitState,editUserDetails } from '../../store/user/actions';
+import * as actions from '../../store/user/actions';
 import BudgetOverview from './budgetOverview';
 import ExpenseBreakDown from './expenseBreakDown';
 import Modal from './modalForm';
@@ -76,18 +77,17 @@ class Home extends Component {
                              if (JSON.stringify(resolve.payload) != JSON.stringify({})) {
                                 this.props.editExpense(resolve.payload);
                              } else {
-                                 //TODO -> need to add a new error for this 
-                                 throw resolve.status;
+                                this.props.setErrorMsgState(dataConstants.ERRORS.ERR_BCKERR_CLI);
                              }
                          } else {
-                             throw resolve.payload;
+                            this.props.setErrorMsgState(resolve.payload);
                          }
                      }).catch(reject => {
-                         console.log(reject);
+                        this.props.setErrorMsgState(dataConstants.ERRORS.ERR_NET_CLI);
                      }).finally(() => {});
                 }
             }else{
-               console.log("Budget Exceeded!"); 
+                this.props.setErrorMsgState(dataConstants.ERRORS.ERR_BUDEXX_CLI);
             }
         } else {
             window.location.pathname = "/landing";
@@ -103,15 +103,13 @@ class Home extends Component {
                     if (JSON.stringify(resolve.payload) != JSON.stringify({})) {
                         this.props.setInitState(resolve.payload);
                     } else {
-                        //TODO -> need to add a new error for this 
-                        throw resolve.status;
+                        this.props.setErrorMsgState(dataConstants.ERRORS.ERR_BCKERR_CLI);
                     }
                 } else {
-                    throw resolve.payload;
+                    this.props.setErrorMsgState(resolve.payload);
                 }
             }).catch(reject => {
-
-                console.log(reject);
+                this.props.setErrorMsgState(dataConstants.ERRORS.ERR_NET_CLI);
             });
         } else {
             window.location.pathname = "/landing";
@@ -148,17 +146,20 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userObject: {...state }
+        userObject: {...state.userStateReducer}
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         setInitState: (userObject) => {
-            dispatch(setinitState(userObject, actionTypes.SETINIUSERDATA));
+            dispatch(actions.setinitState(userObject, actionTypes.SETINIUSERDATA));
         },
         editExpense: (userObject) => {
-            dispatch(editUserDetails(userObject, actionTypes.EDITEXPENSE));
+            dispatch(actions.editUserDetails(userObject, actionTypes.EDITEXPENSE));
+        },
+        setErrorMsgState: (errorPayload) => {
+            dispatch(actions.setErrorMsg(errorPayload, actionTypes.SETERRORMSG));
         }
     };
 };
