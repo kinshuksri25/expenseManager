@@ -13,5 +13,5 @@ const combinedReducer = combineReducers({userStateReducer,errorMsgReducer});
 const store = createStore(combinedReducer);
 
 ReactDOM.render( <Provider store = { store } > 
-                        < Router/> 
+                        <Router/> 
                 </Provider>, document.getElementById("root"));

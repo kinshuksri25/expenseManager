@@ -59,7 +59,7 @@ class SignUp extends Component {
         //check password
     checkPasswordValidity(password, confirmPassword) {
         //check password validity
-        if (password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])\S{8},}$/g) == null) {
+        if (password.match(/[a-z]/g) == null || password.match(/[A-Z]/g) == null || password.match(/[0-9]/g) == null || password.length < 8) {
             return ERRORS.ERR_INPASS_CLI;
         }
         if (password != confirmPassword) {

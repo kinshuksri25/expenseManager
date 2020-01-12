@@ -1,0 +1,4 @@
+## following folders/files should be ignored
+backend/node_modules
+frontend/node_modules
+frontEnd/src/dist

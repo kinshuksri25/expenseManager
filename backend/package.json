@@ -10,8 +10,8 @@
   },
   "jest": {},
   "keywords": [
-       "tally"
-    ],
+    "tally"
+  ],
   "author": "kinshuk srivastava",
   "license": "ISC",
   "devDependencies": {

@@ -1,6 +1,6 @@
 /*
- *   Primary Pre-Login Handlers
- */
+*   Primary Pre-Login Handlers
+*/
 
 //Dependencies
 let mongo = require('./data');

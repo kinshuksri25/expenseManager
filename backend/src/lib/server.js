@@ -1,6 +1,6 @@
 /*
- *   Primary Router File
- */
+*   Primary Router File
+*/
 
 //Dependencies
 let express = require('express');
@@ -30,8 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 /*
- *   defining all the routes using express
- */
+*   defining all the routes using express
+*/
 
 //this is a test GET route for supertest
 app.get('/getTestRoute', function(req, res) {
@@ -47,7 +47,6 @@ app.post('/postTestRoute', function(req, res) {
     res.end();
 });
 
-//TODO --> set appropriate CORS header 
 app.post('/login', function(req, res) {
     requestObject = req.body;
 

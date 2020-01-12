@@ -1,6 +1,6 @@
 /*
- *   Primary Domain Logic Handlers
- */
+*   Primary Domain Logic Handlers
+*/
 
 //Dependencies
 let mongo = require('./data');

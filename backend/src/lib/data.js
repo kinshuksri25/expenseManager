@@ -1,6 +1,6 @@
 /*
- * Data layer for the backend 
- */
+* Data layer for the backend 
+*/
 
 //Dependencies
 let mongoDB = require('mongodb').MongoClient;
