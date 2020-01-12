@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from "react-hot-loader";
 
-//middleware has to be added to dependencies
-
 class SimpleForm extends Component {
 
     constructor(props) {
@@ -92,14 +90,16 @@ class SimpleForm extends Component {
 
                             } else {
                                 switch (param.type) {
-                                case "DropDown":{ return ( <select id = { param.name }
-                                                  name = { param.name }
-                                                  onChange = { this.onChangeHandler } required = { param.isRequired }> 
-                                                  {
-                                                    this.props.options.map(option => {
-                                                    return ( <option value = { option } > { option } </option>)
-                                                    })
-                                                  } </select>);
+                                case "DropDown":{ 
+                                                return ( <select id = { param.name }
+                                                          name = { param.name } key = { param.id }
+                                                          onChange = { this.onChangeHandler } required = { param.isRequired }> 
+                                                          {
+                                                            this.props.options.map(option => {
+                                                            return ( <option value = { option } > { option } </option>)
+                                                            })
+                                                          } 
+                                                          </select>);
                                                   break;
                                                 }
 

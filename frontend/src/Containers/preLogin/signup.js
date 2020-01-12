@@ -56,10 +56,10 @@ class SignUp extends Component {
                 console.log(ERRORS.ERR_INVOBJ_CLI);
             }
         }
-        //check password
+
     checkPasswordValidity(password, confirmPassword) {
-        //check password validity
-        if (password.match(/[a-z]/g) == null || password.match(/[A-Z]/g) == null || password.match(/[0-9]/g) == null || password.length < 8) {
+        var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+        if (!regex.test(password)) {
             return ERRORS.ERR_INPASS_CLI;
         }
         if (password != confirmPassword) {
@@ -67,6 +67,7 @@ class SignUp extends Component {
         }
         return "";
     };
+    
     render() {
         return ( < div className = "signUpContainer">
                     <SimpleForm formAttributes = { formConstants.signup }
